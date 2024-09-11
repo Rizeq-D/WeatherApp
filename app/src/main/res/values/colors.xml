@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="Purple_200">#FFBB86FC</color>
+    <color name="Purple_500">#FF6200EE</color>
+    <color name="Purple_700">#FF3700B3</color>
+    <color name="Teal_200">#FF03DAC5</color>
+    <color name="Teal_700">#FF018786</color>
+    <color name="Black">#FF000000</color>
+    <color name="White">#EEEEEE</color>
+    <color name="Purple_100">#5D498C</color>
+    <color name="Purple_900">#130339</color>
+    <color name="Orange">#FFE38B08</color>
+    <color name="Light_green">#009688</color>
+    <color name="Lighter_blue">#FFC4DAEC</color>
+    <color name="DarkRed">#360603</color>
+    <color name="LightGrey">#FF464544</color>
+    <color name="Light_blue">#FF64A8DF</color>
+    <color name="Light_brown">#6D5F49</color>
+    <color name="Light_khaki">#949A70</color>
+    <color name="Red">#FFE91809</color>
+    <color name="Yellow">#FFEFD80B</color>
+    <color name="DarkYellow">#f8cc1b</color>
+    <color name="Blue">#0000FF</color>
+    <color name="Grass">#42826c</color>
 </resources>

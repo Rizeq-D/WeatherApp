@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.WeatherApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorPrimary">@color/Yellow</item>
+        <item name="colorPrimaryDark">@color/DarkYellow</item>
+        <item name="colorAccent">@color/Orange</item>
+
+    </style>
 </resources>
