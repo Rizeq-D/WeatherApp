@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.play.services.location)
     implementation(libs.dexter)
+    implementation(libs.retrofit)
+    implementation (libs.retrofit2.converter.gson)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
