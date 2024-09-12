@@ -22,6 +22,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.rizeq.weatherapp.databinding.ActivityMainBinding
 import com.rizeq.weatherapp.models.WeatherResponse
 import com.rizeq.weatherapp.network.WeatherService
 import com.rizeq.weatherapp.utils.Constants
@@ -30,8 +31,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
@@ -39,7 +45,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -91,19 +98,6 @@ class MainActivity : AppCompatActivity() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
-
-    private fun showCustomProgressDialog() {
-        mProgressDialog = Dialog(this)
-        mProgressDialog!!.setContentView(R.layout.dialog_custom_progress)
-        mProgressDialog!!.show()
-    }
-
-    private fun hideProgressDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog!!.dismiss()
-        }
-    }
-
     private fun showRationalDialogForPermissions() {
         AlertDialog.Builder(this)
             .setMessage("It Looks like you have turned off permissions required for this feature. It can be enabled under Application Settings")
@@ -169,9 +163,12 @@ class MainActivity : AppCompatActivity() {
             listCall.enqueue(object : Callback<WeatherResponse> {
                 @SuppressLint("SetTextI18n")
                 override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
-                    hideProgressDialog()
+
                     if (response.isSuccessful) {
+                        hideProgressDialog()
                         val weatherList: WeatherResponse? = response.body()
+                        if (weatherList != null)
+                            setupUI(weatherList)
                         Log.i("WeatherResponse", "Weather data received: $weatherList")
                     } else {
                         when (response.code()) {
@@ -195,4 +192,68 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
     }
+    private fun showCustomProgressDialog() {
+        mProgressDialog = Dialog(this)
+        mProgressDialog!!.setContentView(R.layout.dialog_custom_progress)
+        mProgressDialog!!.show()
+    }
+
+    private fun hideProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog!!.dismiss()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupUI(weatherList: WeatherResponse) {
+
+        for (z in weatherList.weather.indices) {
+            Log.i("NAME", weatherList.weather[z].main)
+
+            binding.tvMain.text = weatherList.weather[z].main
+            binding.tvMainDescription.text = weatherList.weather[z].description
+            binding.tvTemp.text =
+                weatherList.main.temp.toString() + getUnit(application.resources.configuration.locales.toString())
+            binding.tvHumidity.text = weatherList.main.humidity.toString() + " per cent"
+            binding.tvMin.text = weatherList.main.tempMin.toString() + " min"
+            binding.tvMax.text = weatherList.main.tempMax.toString() + " max"
+            binding.tvSpeed.text = weatherList.wind.speed.toString()
+            binding.tvName.text = weatherList.name
+            binding.tvCountry.text = weatherList.sys.country
+            binding.tvSunriseTime.text = unixTime(weatherList.sys.sunrise.toLong())
+            binding.tvSunsetTime.text = unixTime(weatherList.sys.sunset.toLong())
+
+            when (weatherList.weather[z].icon) {
+                "01d" -> binding.ivMain.setImageResource(R.drawable.sunny)
+                "02d" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "03d" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "04d" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "04n" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "10d" -> binding.ivMain.setImageResource(R.drawable.rain)
+                "11d" -> binding.ivMain.setImageResource(R.drawable.storm)
+                "13d" -> binding.ivMain.setImageResource(R.drawable.snowflake)
+                "01n" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "02n" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "03n" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "10n" -> binding.ivMain.setImageResource(R.drawable.cloud)
+                "11n" -> binding.ivMain.setImageResource(R.drawable.rain)
+                "13n" -> binding.ivMain.setImageResource(R.drawable.snowflake)
+            }
+        }
+    }
+    private fun getUnit(locale: String): String {
+        return if (locale == "US" || locale == "LR" || locale == "MM") {
+            "°F"
+        } else {
+            "°C"
+        }
+    }
+    private fun unixTime(timex: Long): String? {
+        val date = Date(timex * 1000L)
+        @SuppressLint("SimpleDateFormat") val sdf =
+            SimpleDateFormat("HH:mm:ss")
+        sdf.timeZone = TimeZone.getDefault()
+        return sdf.format(date)
+    }
 }
+
