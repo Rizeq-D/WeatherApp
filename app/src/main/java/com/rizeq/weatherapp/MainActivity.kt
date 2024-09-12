@@ -191,6 +191,7 @@ class MainActivity : AppCompatActivity() {
                         val weatherResponseJsonString = Gson().toJson(weatherList)
                         val editor = mSharedPreferences.edit()
                         editor.putString(Constants.WEATHER_RESPONSE_DATA, weatherResponseJsonString)
+                        editor.clear()
                         editor.apply()
 
                         Log.i("WeatherResponse", "Weather data received: $weatherList")
