@@ -158,7 +158,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_min"
+                        android:id="@+id/tvMin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
@@ -168,7 +168,7 @@
                         tools:text="Minimum" />
 
                     <TextView
-                        android:id="@+id/tv_max"
+                        android:id="@+id/tvMax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
